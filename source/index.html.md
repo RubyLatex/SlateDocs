@@ -10,13 +10,13 @@ search: true
 
 # Introduction
 
-This is the official RbTeX documentation. The documentation here includes the useage of RbTeX, GMath,
-and other information regarding RubyLatex.  
+This is the official RbTeX documentation. The documentation here includes the useage of RbTeX, both
+for LaTeX and for Ruby, and other information regarding RubyLatex.  
 
 # Installing
-RubyLatex was build on OS X 10.11 (El Capitan), and as such is configured for that environment. For the
-time being, the ``rblatex`` processor requires that you have Ruby installed at ``usr/local/bin/ruby``.
-If you need to change this, simply change the shebang in the first line of the ``rblatex`` program.
+RubyLatex was build on OS X 10.11 (El Capitan), and as such is configured for that environment. The
+install script included in the install directory will (probably) work for Linux as well as OS X, but
+definitely will not work for Windows. Simply run `sudo ./osx_texlive` and watch the magic happen.
 
 # LaTeX
 On the LaTeX side, you simply need to include the rubylatex package. The package includes several
@@ -34,6 +34,7 @@ commands discussed in this section.
 
 ## RbTeX
 ``\RbTeX`` is a fancy command that displays the RbTeX logo. It must be used in math mode.
+> Let's produce the pretty logo in the top left corner of this page
 
 ```tex
 \documentclass{myclass}
@@ -48,6 +49,7 @@ Hi! I'm using the $\RbTeX$ package.
 ``rbtex`` is the default environemnt for injecting Ruby code. Anything inside the ``rbtex`` environemnt
 needs the be ruby code. For example, using ``%`` to comment items inside the ``rbtex`` will not work;
 you must use a ``#`` instead.
+> Ruby commands are the only things allowed in the `rbtex` environement
 
 ```tex
 \documentclass{myclass}
@@ -67,6 +69,7 @@ puts 'hello, world'
 <aside class='warning'>THIS IS NOT YET IMPLEMENTED</aside>
 ``frbtex`` provides an interface with which to include an entire external file. The file will be copied
 verbatim, so there is no need to ``require 'rbtex'`` in the supplied script.
+> Don't use this, yo.
 
 ```tex
 \documentclass{myclass}
@@ -140,6 +143,8 @@ Wraps `arg0` in an inline math mode environemnt
 ### Returns
 * A string representing the term `$arg0$`
 
+> x squared is not actually my favorite function
+
 ```tex
 \documentclass{myclass}
 \usepackage{rubylatex}
@@ -149,7 +154,7 @@ Wraps `arg0` in an inline math mode environemnt
 \begin{rbtex}
 
 myfx = "f(x) = x^{2}"
-Tex.print "#{Tex.imath(myfx)} is a nice equation."
+Tex.print "#{Tex.imath(myfx)} is my favorite function."
 
 \end{rbtex}
 \end{document}
@@ -163,6 +168,7 @@ Wraps `arg0` in an center environment.
 
 ### Returns
 * A string representing the term `\begin{center}arg0\end{center}`
+> Use this to center non-math environements
 
 ```tex
 \documentclass{myclass}
