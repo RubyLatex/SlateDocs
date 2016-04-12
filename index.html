@@ -118,14 +118,14 @@
       <div class="content">
         <h1 id="introduction">Introduction</h1>
 
-<p>This is the official RbTeX documentation. The documentation here includes the useage of RbTeX, GMath,
-and other information regarding RubyLatex.  </p>
+<p>This is the official RbTeX documentation. The documentation here includes the useage of RbTeX, both
+for LaTeX and for Ruby, and other information regarding RubyLatex.  </p>
 
 <h1 id="installing">Installing</h1>
 
-<p>RubyLatex was build on OS X 10.11 (El Capitan), and as such is configured for that environment. For the
-time being, the <code class="prettyprint">rblatex</code> processor requires that you have Ruby installed at <code class="prettyprint">usr/local/bin/ruby</code>.
-If you need to change this, simply change the shebang in the first line of the <code class="prettyprint">rblatex</code> program.</p>
+<p>RubyLatex was build on OS X 10.11 (El Capitan), and as such is configured for that environment. The
+install script included in the install directory will (probably) work for Linux as well as OS X, but
+definitely will not work for Windows. Simply run <code class="prettyprint">sudo ./osx_texlive</code> and watch the magic happen.</p>
 
 <h1 id="latex">LaTeX</h1>
 
@@ -146,6 +146,10 @@ commands discussed in this section.</p>
 <h2 id="rbtex">RbTeX</h2>
 
 <p><code class="prettyprint">\RbTeX</code> is a fancy command that displays the RbTeX logo. It must be used in math mode.</p>
+
+<blockquote>
+<p>Let&rsquo;s produce the pretty logo in the top left corner of this page</p>
+</blockquote>
 <pre class="highlight tex"><code><span class="k">\documentclass</span><span class="p">{</span>myclass<span class="p">}</span>
 <span class="k">\usepackage</span><span class="p">{</span>rubylatex<span class="p">}</span>
 
@@ -159,6 +163,10 @@ Hi! I'm using the <span class="p">$</span><span class="nv">\RbTeX</span><span cl
 <p><code class="prettyprint">rbtex</code> is the default environemnt for injecting Ruby code. Anything inside the <code class="prettyprint">rbtex</code> environemnt
 needs the be ruby code. For example, using <code class="prettyprint">%</code> to comment items inside the <code class="prettyprint">rbtex</code> will not work;
 you must use a <code class="prettyprint">#</code> instead.</p>
+
+<blockquote>
+<p>Ruby commands are the only things allowed in the <code class="prettyprint">rbtex</code> environement</p>
+</blockquote>
 <pre class="highlight tex"><code><span class="k">\documentclass</span><span class="p">{</span>myclass<span class="p">}</span>
 <span class="k">\usepackage</span><span class="p">{</span>rubylatex<span class="p">}</span>
 
@@ -178,6 +186,10 @@ puts 'hello, world'
 
 <p><code class="prettyprint">frbtex</code> provides an interface with which to include an entire external file. The file will be copied
 verbatim, so there is no need to <code class="prettyprint">require &#39;rbtex&#39;</code> in the supplied script.</p>
+
+<blockquote>
+<p>Don&rsquo;t use this, yo.</p>
+</blockquote>
 <pre class="highlight tex"><code><span class="k">\documentclass</span><span class="p">{</span>myclass<span class="p">}</span>
 <span class="k">\usepackage</span><span class="p">{</span>rubylatex<span class="p">}</span>
 
@@ -268,6 +280,10 @@ Tex.print Tex.cmath(myfx)
 <ul>
 <li>A string representing the term <code class="prettyprint">$arg0$</code></li>
 </ul>
+
+<blockquote>
+<p>x squared is not actually my favorite function</p>
+</blockquote>
 <pre class="highlight tex"><code><span class="k">\documentclass</span><span class="p">{</span>myclass<span class="p">}</span>
 <span class="k">\usepackage</span><span class="p">{</span>rubylatex<span class="p">}</span>
 
@@ -276,7 +292,7 @@ Tex.print Tex.cmath(myfx)
 <span class="nt">\begin{rbtex}</span>
 
 myfx = "f(x) = x<span class="p">^{</span>2<span class="p">}</span>"
-Tex.print "#<span class="p">{</span>Tex.imath(myfx)<span class="p">}</span> is a nice equation."
+Tex.print "#<span class="p">{</span>Tex.imath(myfx)<span class="p">}</span> is my favorite function."
 
 <span class="nt">\end{rbtex}</span>
 <span class="nt">\end{document}</span>
@@ -295,7 +311,8 @@ Tex.print "#<span class="p">{</span>Tex.imath(myfx)<span class="p">}</span> is a
 <h3 id="returns">Returns</h3>
 
 <ul>
-<li>A string representing the term <code class="prettyprint">\begin{center}arg0\end{center}</code></li>
+<li>A string representing the term <code class="prettyprint">\begin{center}arg0\end{center}</code>
+&gt; Use this to center non-math environements</li>
 </ul>
 <pre class="highlight tex"><code><span class="k">\documentclass</span><span class="p">{</span>myclass<span class="p">}</span>
 <span class="k">\usepackage</span><span class="p">{</span>rubylatex<span class="p">}</span>
