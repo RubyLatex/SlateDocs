@@ -1,168 +1,209 @@
 ---
 title: API Reference
 
-language_tabs:
-  - shell
-  - ruby
-  - python
-
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
+  - <a href='https://github.com/RubyLatex'>Hosted on Github</a>
   - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
-
-includes:
-  - errors
 
 search: true
 ---
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+This is the official RbTeX documentation. The documentation here includes the useage of RbTeX, GMath,
+and other information regarding RubyLatex.  
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+# Installing
+RubyLatex was build on OS X 10.11 (El Capitan), and as such is configured for that environment. For the
+time being, the ``rblatex`` processor requires that you have Ruby installed at ``usr/local/bin/ruby``.
+If you need to change this, simply change the shebang in the first line of the ``rblatex`` program.
 
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+# LaTeX
+On the LaTeX side, you simply need to include the rubylatex package. The package includes several
+commands discussed in this section.
+> You can include the rubylatex package like this
 
-# Authentication
+```tex
+\documentclass{myclass}
+\usepackage{rubylatex}
 
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
+\begin{document}
+% content here
+\end{document}
 ```
 
-```python
-import kittn
+## RbTeX
+``\RbTeX`` is a fancy command that displays the RbTeX logo. It must be used in math mode.
 
-api = kittn.authorize('meowmeowmeow')
+```tex
+\documentclass{myclass}
+\usepackage{rubylatex}
+
+\begin{document}
+Hi! I'm using the $\RbTeX$ package.
+\end{document}
 ```
 
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+## rbtex
+``rbtex`` is the default environemnt for injecting Ruby code. Anything inside the ``rbtex`` environemnt
+needs the be ruby code. For example, using ``%`` to comment items inside the ``rbtex`` will not work;
+you must use a ``#`` instead.
+
+```tex
+\documentclass{myclass}
+\usepackage{rubylatex}
+
+\begin{document}
+
+% out here, use LaTeX supported commands
+\begin{rbtex}
+# in here, use Ruby supported commands
+puts 'hello, world'
+\end{rbtex}
+\end{document}
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+## frbtex
+<aside class='warning'>THIS IS NOT YET IMPLEMENTED</aside>
+``frbtex`` provides an interface with which to include an entire external file. The file will be copied
+verbatim, so there is no need to ``require 'rbtex'`` in the supplied script.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+```tex
+\documentclass{myclass}
+\usepackage{rubylatex}
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+\begin{document}
+\frbtex{myfile.rb}
 
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
+\begin{rbtex}
+myFunctionDefinedInMyFileDotRb
+\end{rbtex}
+\end{document}
 ```
 
-```python
-import kittn
+# Tex
+The ``Tex`` module contains tools to generate LaTeX output from ruby.
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
+## Tex.print(arg0)
+This command prints `arg0` to the LaTeX document.
+
+### Arguments
+* `arg0`: The string to be printed out
+
+> Print a string to the TeX document
+
+```tex
+\documentclass{myclass}
+\usepackage{rubylatex}
+
+\begin{document}
+
+\begin{rbtex}
+
+Tex.print("Hello, world from Ruby!")
+
+\end{rbtex}
+\end{document}
 ```
 
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
+## Tex.cmath(arg0)
+Wraps `arg0` in a centered equation environemnt
+### Arguments
+* `arg0`: The string to be wrapped by `\[` and `\]`
+
+### Returns
+* A string representing the term `\[arg0\]`
+
+> Centering an equation is easy
+
+```tex
+\documentclass{myclass}
+\usepackage{rubylatex}
+
+\begin{document}
+
+\begin{rbtex}
+
+myfx = "f(x)"
+Tex.print Tex.cmath(myfx)
+
+\end{rbtex}
+\end{document}
 ```
 
-> The above command returns JSON structured like this:
+## Tex.imath(arg0)
+Wraps `arg0` in an inline math mode environemnt
 
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
+### Arguments
+* `arg0`: The string to be wrapped by `$` and `$`
+
+### Returns
+* A string representing the term `$arg0$`
+
+```tex
+\documentclass{myclass}
+\usepackage{rubylatex}
+
+\begin{document}
+
+\begin{rbtex}
+
+myfx = "f(x) = x^{2}"
+Tex.print "#{Tex.imath(myfx)} is a nice equation."
+
+\end{rbtex}
+\end{document}
+```
+
+## Tex.center(arg0)
+Wraps `arg0` in an center environment.
+
+### Arguments
+* `arg0`: The string to be wrapped by `\begin{center}` and `\end{center}`
+
+### Returns
+* A string representing the term `\begin{center}arg0\end{center}`
+
+```tex
+\documentclass{myclass}
+\usepackage{rubylatex}
+
+\begin{document}
+
+\begin{rbtex}
+
+Tex.print Tex.center("This is important!")
+
+\end{rbtex}
+\end{document}
+```
+
+## Table
+The `Tex` module provides a simple way to create a generic table.
+
+### Minimal Working Example
+This example provides a simple use case for generating a table. The `rubylatex` package by default
+formats this to be a `tabularx` environment with all columns set to `|X|`.
+
+```tex
+\documentclass{myclass}
+\usepackage{rubylatex}
+
+\begin{document}
+
+\begin{rbtex}
+
+array = [
+    ["Header 01","Header 02","Header 03"],
+    ["Content 01","Content 01","Content 01"],
+    ["Content 02","Content 02","Content 02"]
 ]
+
+myTable = Tex::Table.new array
+content = myTable.create
+Tex.print(content)
+
+\end{rbtex}
+
+\end{document}
 ```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
-
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
